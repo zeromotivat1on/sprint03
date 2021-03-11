@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Human, .Superhero {
+    padding: 20px;
+    background: lightgray;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.Human img, .Superhero img {
+    width: 450px;
+    height: 450px;
+    display: flex;
+    border-radius: 10px;
+}
+
+.buttons {
+    display: block;
+}
