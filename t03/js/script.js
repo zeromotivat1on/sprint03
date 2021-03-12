@@ -10,61 +10,116 @@ class Human {
         document.getElementById("age").innerHTML = age;
         this.calories = calories;
         document.getElementById("calories").innerHTML = calories;
+        this.sleepTime = false;
+        this.feedTime = false;
+        setInterval(() => this.hungry(), 60000);
     }
 
-    sleepFor(this.sleep_seconds) {
-        console.log(this.sleep_seconds);
-        if(this.sleep_seconds > 0) {
-            console.log(`I'm sleeping | seconds left ${--this.sleep_seconds}`);
-        } else {
-            clearInterval(this.sleep_timer);
-            console.log("I'm awake now");
+    sleepFor(sleep_seconds) {
+        if(!this.feedTime && !this.sleepTime){
+            this.sleepTime = true;
+            document.querySelector(".Main .display_info").innerHTML = "I'm sleeping";
+            setTimeout(() => {
+                document.querySelector(".Main .display_info").innerHTML = "I'm awake now";
+                this.sleepTime = false;
+                setTimeout(() => {
+                    document.querySelector(".Main .display_info").innerHTML = "";
+                }, 2000)
+            }, sleep_seconds * 1000);
         }
     }
 
     feed() {
-        if(this.calories > 0 && this.calories < 500) {
-            console.log("Nom nom nom");
+        if(!this.sleepTime && !this.feedTime){
+            this.feedTime = true;
             this.calories = +this.calories + 200;
             document.getElementById("calories").innerHTML = this.calories;
+
+            document.querySelector(".Main .display_info").innerHTML = "Nom nom nom";
+            setTimeout(() => {
+                document.querySelector(".Main .display_info").innerHTML = "";
+                if(this.calories > 0 && this.calories < 500) {
+                    document.querySelector(".Main .display_info").innerHTML = "I'm still hungry";
+                    this.feedTime = false;
+                } else {
+                    document.querySelector(".Main .display_info").innerHTML = "I'm not hungry";
+                    setTimeout(() => {
+                        document.querySelector(".Main .display_info").innerHTML = "";
+                        this.feedTime = false;
+                    }, 2000)
+                }
+            }, 10000);
         }
-        else {
-            console.log("I'm not hungry");
+    }
+
+    hungry() {
+        if(this.calories - 200 > 0) {
+            this.calories = +this.calories - 200;
         }
+        document.getElementById("calories").innerHTML = this.calories;
     }
 }
 
 class Superhero extends Human {
     constructor(firstName, lastName, gender, age, calories) {
         super(firstName, lastName, gender, age, calories);
+
+        this.flyTime = false;
+        this.fightTime = false;
+
+        document.querySelector(".Main .no_image").classList.replace("no_image", "image");
+        document.querySelector(".Main .image").classList.replace("image", "no_image");
+
+        document.querySelector(".Main .buttons .no_button").classList.replace("no_button", "cringe");
+        document.querySelector(".Main .buttons .no_button").classList.replace("no_button", "cringe");
     }
 
     fly() {
-        console.log("I'm flying!");
+        if(!this.flyTime && !this.fightTime){
+            this.flyTime = true;
+            document.querySelector(".Main .display_info").innerHTML = "I'm flying!";
+            setTimeout(() => {
+                document.querySelector(".Main .display_info").innerHTML = "";
+                this.flyTime = false;
+            }, 10000)
+        }
     }
 
     fightWithEvil() {
-        console.log("Khhhh-chh... Bang-g-g-g... Evil is defeated!");
+        if(!this.flyTime && !this.fightTime){
+            this.fightTime = true;
+            document.querySelector(".Main .display_info").innerHTML = "Khhhh-chh... Bang-g-g-g... Evil is defeated!";
+            setTimeout(() => {
+                document.querySelector(".Main .display_info").innerHTML = "";
+                this.fightTime = false;
+            }, 3000)
+        }
     }
 }
 
+const human = new Human("Vasya", "Pupkin", "male", 53, 0);
+var superhero;
 
-const human = new Human("Pog", "Champer", "male", 53, 100);
-//const superhero = new Superhero;
-
-document.querySelector(".Human .buttons .sleep").addEventListener("click", event => {
-    var sleep_seconds = prompt("Enter number of seconds to sleep", "");
-    var sleep_timer = setInterval(human.sleepFor(sleep_seconds), +sleep_seconds * 1000);
+document.querySelector(".Main .buttons .sleep").addEventListener("click", event => {
+    human.sleepFor(prompt("Enter number of seconds to sleep"))
 })
 
-document.querySelector(".Human .buttons .feed").addEventListener("click", event => {
-    var feed_timer = setInterval(human.feed(), 10000);
+document.querySelector(".Main .buttons .feed").addEventListener("click", event => {
+    human.feed();
 })
 
-document.querySelector(".Superhero .buttons .fly").addEventListener("click", event => {
-    var feed_timer = setInterval(superhero.fly(), 10000);
+document.querySelector(".Main .turn").addEventListener("click", event => {
+    if(human.calories >= 500) {
+        superhero = new Superhero("Pog", "Champer", "Helicopter", 34, human.calories);
+    } else {
+        document.querySelector(".Main .display_info").innerHTML = "Not enough calories!";
+    }
 })
 
-document.querySelector(".Superhero .buttons .fightWithEvil").addEventListener("click", event => {
+document.querySelector(".Main .buttons .fly").addEventListener("click", event => {
+    superhero.fly();
+})
+
+document.querySelector(".Main .buttons .fight").addEventListener("click", event => {
     superhero.fightWithEvil();
 })

@@ -7,20 +7,28 @@ body {
     flex-direction: column;
 }
 
-.Human, .Superhero {
+.Main {
     padding: 20px;
     background: lightgray;
     border-radius: 10px;
     margin: 10px;
 }
 
-.Human img, .Superhero img {
+.turn {
+    margin-bottom: 10px;
+}
+
+.image, .no_image {
     width: 450px;
     height: 450px;
     display: flex;
     border-radius: 10px;
 }
 
-.buttons {
-    display: block;
+.no_image, .no_button {
+    display: none;
+}
+
+.display_info {
+    padding-bottom: 10px;
 }
