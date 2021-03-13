@@ -1,6 +1,6 @@
 /*
     In order to check if it works correctly - install Line Server from Visual Code extensions,
-    and then in right left corner (blue line) press 'Go Live'
+    and then in right bottom corner press 'Go Live'
 */
 
 import * as list from "./module.js";
